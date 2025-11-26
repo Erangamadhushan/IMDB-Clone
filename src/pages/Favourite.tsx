@@ -1,4 +1,4 @@
-import { useMovieContext } from "../context/MovieContext";
+import { useMovieContext } from "../context/useContext/useMovieContext";
 import MovieCard from "../components/ui/Home/MovieCard";
 
 function Favorite() {
@@ -22,8 +22,8 @@ function Favorite() {
       ) : (
         /* Movies Grid */
         <div className="movies-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 p-4 w-full box-border">
-          {favorites.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} className="animate-fadeIn" />
+          {favorites.map((movie,index) => (
+            <MovieCard key={index} movie={movie} className="animate-fadeIn" />
           ))}
         </div>
       )}
