@@ -1,11 +1,11 @@
-import { useMovieContext } from "../context/MovieContext";
+import { useMovieContext } from "../context/useContext/useMovieContext";
 import MovieCard from "../components/ui/Home/MovieCard";
 
 function Favorite() {
   const { favorites } = useMovieContext();
 
   return (
-    <div className="favorites p-8 w-full box-border">
+    <div className="favorites bg-linear-to-r from-red-950 via-red-800 to-red-950 p-8 w-full box-border">
       {/* Page Title */}
       <h2 className="mb-8 text-center text-4xl text-white drop-shadow-md">
         My Favorite Movies
@@ -21,9 +21,9 @@ function Favorite() {
         </div>
       ) : (
         /* Movies Grid */
-        <div className="movies-grid grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 p-4 w-full box-border">
-          {favorites.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} className="animate-fadeIn" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4 w-full box-border">
+          {favorites.map((movie,index) => (
+            <MovieCard key={index} movie={movie} className="animate-fadeIn" />
           ))}
         </div>
       )}
