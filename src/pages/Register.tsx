@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { authAPI } from "../services/api";
 
 
 
@@ -46,7 +47,12 @@ export default function Register() {
     setSubmitting(true);
     try {
       
-      alert("Registered (demo) — integrate your API here.");
+      const response = await authAPI.register(form.username, form.email, form.password);
+      console.log("Registration response:", response.data.message);
+      
+      alert("Registration successful! You can now log in.");
+
+      
       setForm({ username: "", email: "", password: "", confirmPassword: "" });
     } catch (err) {
 

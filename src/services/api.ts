@@ -1,5 +1,8 @@
+import axios from 'axios';
+
 const API_KEY: string = import.meta.env.VITE_API_KEY;
 const BASE_URL: string = import.meta.env.VITE_BASE_URL;
+const API_URL: string = import.meta.env.VITE_API_URL;
 
 
 export const getPopularMovies = async () => {
@@ -21,3 +24,27 @@ export const searchMovies = async (query: string) => {
   return data.results;
 };
 
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+export const authAPI = {
+  login: (email: string, password: string) => {
+    return api.post('/api/auth/user/login', { email, password });
+  },
+  register: (username: string, email: string, password: string) => {
+    return api.post('/api/auth/user/register', { username, email, password });
+  },
+  getUserProfile: (token: string) => {
+    return api.get('/api/auth/user/profile', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+}
+
+export default api;
