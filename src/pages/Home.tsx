@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { searchMovies, getPopularMovies } from "../services/api";
 
 import { HeroSection } from "../components/Home/HeroSection";
+import { About } from "../components/Home/About";
+import { ExplorerSection } from "../components/Home/ExplorerSection";
+import { Footer } from "../components/Footer";
 
 function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,11 +33,11 @@ function Home() {
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchQuery.trim()) {
-        const popularMovies = await getPopularMovies();
-        setMovies(popularMovies);
-        setError(null);
-        setLoading(false);
-        return;
+      const popularMovies = await getPopularMovies();
+      setMovies(popularMovies);
+      setError(null);
+      setLoading(false);
+      return;
     }
     if (loading) return;
 
@@ -53,12 +56,15 @@ function Home() {
 
   return (
     <>
-      <div className="w-full  bg-linear-to-r from-red-950 via-red-800 to-red-950 min-h-screen box-border">
+      <div className="w-full bg-linear-to-r from-red-950 via-red-800 to-red-950 min-h-screen box-border">
         <HeroSection />
+        <About />
         <div className="md:py-8 w-full box-border sm:py-8 py-4">
-            <h2 className="text-3xl font-bold text-white text-center mb-4">
-              {searchQuery ? `Search Results for "${searchQuery}"` : "Popular Movies"}
-            </h2>
+          <h2 className="text-3xl font-bold text-white text-center mb-4">
+            {searchQuery
+              ? `Search Results for "${searchQuery}"`
+              : "Popular Movies"}
+          </h2>
           <form
             onSubmit={handleSearch}
             className="max-w-[600px] mx-auto md:mb-8 flex gap-4 px-4 box-border sm:mb-8 mb-4"
@@ -87,12 +93,14 @@ function Home() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4 w-full box-border">
               {movies.map((movie, index) => (
-                <MovieCard movie={movie} key={index} className="animate-spin"/>
+                <MovieCard movie={movie} key={index} className="animate-spin" />
               ))}
             </div>
           )}
         </div>
       </div>
+      <ExplorerSection />
+      <Footer />
     </>
   );
 }
