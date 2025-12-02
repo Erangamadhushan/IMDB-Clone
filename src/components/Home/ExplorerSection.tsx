@@ -2,7 +2,7 @@
 export const ExplorerSection = () => {
     return (
         <section className="explorer-section w-full  py-20  border-b-4 border-b-red-950 bg-linear-to-l from-red-950 via-red-800 to-red-950 text-white items-center px-4">
-            <div className="max-w-5xl mx-auto grid grid-cols-2">
+            <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2">
                 <div >
                     <h2 className="text-4xl font-bold mb-4 text-center">Explore More Movies</h2>
                     <p className="text-lg mb-6 max-w-3xl text-center">

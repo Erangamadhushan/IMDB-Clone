@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { authAPI } from "../services/api";
-
-
+import { useNavigate } from "react-router-dom";
 
 type FormState = {
   username: string;
@@ -17,6 +16,9 @@ export default function Register() {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -49,7 +51,7 @@ export default function Register() {
       
       const response = await authAPI.register(form.username, form.email, form.password);
       console.log("Registration response:", response.data.message);
-      
+      navigate("/login");
       alert("Registration successful! You can now log in.");
 
       
