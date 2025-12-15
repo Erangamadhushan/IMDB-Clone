@@ -1,14 +1,45 @@
-import { useMovieContext } from "../../../context/useContext/useMovieContext";
+import { useMovieContext } from "../../../context/MovieContext";
+import { useAuthContext } from "../../../context/AuthContext";
 import type { Movie } from "../../../types/Movie";
+import { useEffect, useState } from "react";
+
 
 function MovieCard({ movie, key }: { movie: Movie; key: number; className: string}) {
-    const { isFavorite, addToFavorites, removeFromFavorites } = useMovieContext();
-    const favorite = isFavorite(movie.id);
+    const { isFavorite, removeMovieFromFavorites, addMovieToFavorites } = useMovieContext();
+    const { isAuthenticated } =  useAuthContext();
+    const [favorite, setFavorite] = useState<boolean>(false);
+    const movieId: string = movie.id;
 
-    function onFavoriteClick(e : React.MouseEvent<HTMLButtonElement>) {
+    useEffect(() => {
+        const checkFavorite = async () => {
+            if (isAuthenticated) {
+                const isFav = await isFavorite(movieId);
+                //console.log(`Movie ID: ${movieId}, isFavorite: ${isFav}`);
+                setFavorite(isFav ? true : false);
+
+            }
+        };
+        checkFavorite();
+    }, [isAuthenticated, movieId]);
+
+    async function onFavoriteClick(e : React.MouseEvent<HTMLButtonElement>) {
+        
+        e.stopPropagation();
         e.preventDefault();
-        if (favorite) removeFromFavorites(movie.id);
-        else addToFavorites(movie);
+
+        if (favorite) {
+            const result = await removeMovieFromFavorites(movieId);
+            if (!result) {
+                setFavorite(false);
+            }
+        } else {
+            const result = await addMovieToFavorites(movieId);
+            if (!result) {
+                setFavorite(true);
+            }
+        }
+
+        
     }
 
 
@@ -26,17 +57,22 @@ function MovieCard({ movie, key }: { movie: Movie; key: number; className: strin
                 
                 
                 <div className="movie-modal absolute inset-0 bg-black/80 text-white p-4 opacity-0 hover:opacity-100 flex flex-col justify-center items-center text-center transition-all">
-                    <button
-                        onClick={onFavoriteClick}
-                        className={`
-                        absolute top-4 right-4 w-10 h-10 sm:w-10 sm:h-10 
-                        rounded-full flex items-center justify-center transition-colors 
-                        ${favorite ? "bg-red-600 text-white" : "bg-black/50 text-white"} 
-                        hover:bg-red-500
-                        `}
-                    >
-                        ♥
-                    </button>
+                    {
+                        isAuthenticated && (
+                            <button
+                                onClick={onFavoriteClick}
+                                className={`
+                                absolute top-4 right-4 w-10 h-10 sm:w-10 sm:h-10 
+                                rounded-full flex items-center justify-center transition-colors 
+                                ${favorite ? "bg-red-600 text-white" : "bg-black/50 text-white"} 
+                                hover:bg-red-500
+                                `}
+                            >
+                                ♥
+                            </button>
+                        )
+
+                    }
                     <h3 className="text-lg font-bold mb-2">{movie.title}</h3>
                     <p className="">
                         {movie.overview}

@@ -16,7 +16,6 @@ function Home() {
   useEffect(() => {
     const loadPopularMovies = async () => {
       try {
-        console.log("Loading popular movies...");
         const popularMovies = await getPopularMovies();
         setMovies(popularMovies);
       } catch (err) {
@@ -28,7 +27,7 @@ function Home() {
     };
 
     loadPopularMovies();
-  }, []);
+  }, []); // ✅ run once
 
   const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

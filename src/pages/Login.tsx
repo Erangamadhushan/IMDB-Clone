@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { authAPI } from "../services/api"; 
-import { useAuthContext } from "../context/useContext/useAuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 type LoginState = {
@@ -43,7 +43,7 @@ export default function LoginPage() {
             alert("Login successful! You can now log in.");
             login(response.data.user, response.data.token);
             console.log(response.data);
-            navigate("/user-profile");
+            navigate("/");
             setForm({ usernameOrEmail: "", password: "" });
         } catch (error) {
             console.error(error);

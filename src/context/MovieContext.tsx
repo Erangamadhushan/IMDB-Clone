@@ -1,47 +1,105 @@
-import {createContext, useState, useEffect} from "react"
-import type { Movie } from "../types/Movie"
+import {createContext, useContext, useState} from "react"
+import { movieAPI } from "../services/api";
 
 type MovieContextType = {
-    favorites: Movie[];
-    addToFavorites: (movie: Movie) => void;
-    removeFromFavorites: (movieId: Movie['id']) => void;
-    isFavorite: (movieId: Movie['id']) => boolean;
+    favorites: string[];
+    isFavorite: (movieId: string) => Promise<boolean | undefined>;
+    removeMovieFromFavorites: (movieId: string) => boolean;
+    addMovieToFavorites: (movieId: string) => boolean;
+    getAllFavorites: () => Promise<string[]>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const MovieContext = createContext<MovieContextType | null>(null);
 
-
-
 export const MovieProvider = ({children} : {children: React.ReactNode}) => {
-    const [favorites, setFavorites] = useState<Movie[]>(() => {
-        try {
-            const stored = localStorage.getItem("favorites")
-            return stored ? JSON.parse(stored) as Movie[] : []
-        } catch {
-            return []
-        }
-    })
-
-    useEffect(() => {
-        localStorage.setItem('favorites', JSON.stringify(favorites))
-    }, [favorites])
-
-    const addToFavorites = (movie : Movie) => {
-        setFavorites(prev => [...prev, movie])
-    }
-
-    const removeFromFavorites = (movieId: Movie['id']) => {
-        setFavorites(prev => prev.filter(movie => movie.id !== movieId))
-    }
+    const [favorites, setFavorites] = useState([]);
     
-    const isFavorite = (movieId: Movie['id']) => {
-        return favorites.some(movie => movie.id === movieId)
+    const isFavorite =  async (movieId: string) => {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) return false;
+
+            const response = await movieAPI.getFavoriteMovies(token);
+            //console.log("Favorite movies response:", response.data.movies);
+
+            const isFav = response.data.movies.some((movie: string ) => movie == movieId);
+            return isFav;
+            
+        } catch (error) {
+            console.error("Error checking favorite status:", error);
+
+        }
     }
+
+    const getAllFavorites = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) return [];
+            const response = await movieAPI.getFavoriteMovies(token);
+            return response.data.movies;
+        } catch (error) {
+            console.error("Error fetching favorite movies:", error);
+            return [];
+        }
+    }
+
+    const removeMovieFromFavorites = (movieId: string) => {
+        try {
+            //console.log("Removing movie from favorites:", movieId);
+            const token = localStorage.getItem("token");
+            if (!token) return false;
+
+            movieAPI.removeFavoriteMovie(token, movieId)
+                .then(() => {
+                    console.log("Movie removed from favorites successfully");
+                    return false;
+                })
+                .catch((error) => {
+                    console.error("Error removing movie from favorites:", error);
+                });
+
+        }
+        catch (error) {
+            console.error("Error in removeMovieFromFavorites:", error);
+        }
+    }
+
+    const addMovieToFavorites = (movieId: string) => {
+        try {
+            //console.log("Adding movie to favorites:", movieId);
+            const token = localStorage.getItem("token");
+            if (!token) return false;
+
+            movieAPI.addFavoriteMovie(token, movieId)
+                .then(() => {
+                    console.log("Movie removed from favorites successfully");
+                    return true;
+                })
+                .catch((error) => {
+                    console.error("Error removing movie from favorites:", error);
+                });
+            return false
+        }
+        catch(error) {
+            console.error("Error in favorites", error);
+        }
+    }
+        
 
 
     return (
-        <MovieContext.Provider value={{ favorites, addToFavorites, removeFromFavorites, isFavorite }}>
+        <MovieContext.Provider value={{ favorites, isFavorite,getAllFavorites, removeMovieFromFavorites, addMovieToFavorites }}>
             {children}
         </MovieContext.Provider>
     );
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useMovieContext = () => {
+    const ctx = useContext(MovieContext);
+        if (!ctx) {
+            throw new Error("useMovieContext must be used within a MovieProvider");
+        }
+        return ctx;     
 }

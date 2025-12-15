@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react'
-import { useAuthContext } from '../context/useContext/useAuthContext';
-import { useMovieContext } from '../context/useContext/useMovieContext';
+import { useAuthContext } from '../context/AuthContext';
+import { useMovieContext } from '../context/MovieContext';
 import MovieCard from "../components/ui/Home/MovieCard";
 import { authAPI } from '../services/api';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import type { User } from '../types/User';
 
 export const UserProfile = () => {
   const { user, logout } = useAuthContext();
   const [profileData, setProfileData] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
 
   const { favorites } = useMovieContext();
+  const navigate = useNavigate();
 
   const logoutProfile = () => {
     logout();
@@ -22,28 +21,26 @@ export const UserProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
 
         if (!token) {
-          <Navigate to="/login" />
+          navigate("/login");
+          return;
         }
-        const response = await authAPI.getUserProfile(token || '');
 
+        const response = await authAPI.getUserProfile(token);
         setProfileData(response.data.user._doc);
-        if (!profileData) {
-          <Navigate to="/login" />
-        }
-        console.log(profileData);
       } catch (err) {
-        setError('Failed to load profile data');
-        console.error('Profile error:', err);
+        setError("Failed to load profile data");
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, [profileData, user]);
+  }, []); // ✅ EMPTY dependency array
+
   return (
     <div className="min-h-screen bg-neutral-900 text-white p-6">
       <div className="container mx-auto">
