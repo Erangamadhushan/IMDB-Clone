@@ -12,7 +12,6 @@ function Explore() {
     useEffect(() => {
         const loadPopularMovies = async () => {
         try {
-            console.log("Loading popular movies...");
             const popularMovies = await getPopularMovies();
             setMovies(popularMovies);
         } catch (err) {
@@ -24,7 +23,8 @@ function Explore() {
         };
 
         loadPopularMovies();
-    }, []);
+    }, []); // ✅ run once
+
     return (
         <>
             <IMDBNavbar />

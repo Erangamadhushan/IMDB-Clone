@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Search, Plus, Film } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContext';
 
 export default function IMDBNavbar() {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [loginStatus, setLoginStatus] = useState<boolean>(false);
+  const { isAuthenticated, logout } = useAuthContext();
+
+  useEffect(() => {
+    setLoginStatus(isAuthenticated);
+    console.log("Navbar - isAuthenticated:", isAuthenticated);
+  }, [isAuthenticated]);
 
   const handleSearch = () => {
     console.log('Searching for:', searchQuery);
@@ -45,6 +53,17 @@ export default function IMDBNavbar() {
             <Plus className="w-5 h-5" />
             <span className='hidden md:block'>Add to Collection</span>
           </a >
+          {
+            loginStatus ? (
+              <button onClick={logout} className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 py-2 rounded-lg transition-colors duration-200">
+                Logout
+              </button>
+            ): (
+              <Link to="/login" className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 py-2 rounded-lg transition-colors duration-200">
+                Login
+              </Link>
+            )
+          }
         </div>
       </div>
     </nav>

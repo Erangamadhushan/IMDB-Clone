@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
-import {createContext, useState, useEffect} from "react"
+import {createContext, useState, useEffect, useContext} from "react"
 import type { User } from "../types/User";
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type AuthContextType = {
     user: User | null;
@@ -19,15 +19,20 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     const [user, setUser] = useState<User | null >(null);
     const [loading, setLoading] = useState<boolean>(true);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         // Check if user is logged in (token exists in localStorage)
         const token = localStorage.getItem('token');
         const storedUser: string | null = localStorage.getItem('user');
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setIsAuthenticated(!!token);
         
         if (token && storedUser) {
             try {
                 const userData: User | null = JSON.parse(storedUser);
                 if (userData) {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
                     setUser(userData);
                 }
                 setLoading(false);
@@ -38,14 +43,11 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
         }
 
         setLoading(false);
-    }, []);
+    }, [isAuthenticated]);
 
     const login = (userData: User, token: string) => {
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(userData));
-        console.log(userData);
-        console.log(token);
-        alert("Login credentials saved successfully!");
         setUser(userData);
         setIsAuthenticated(true);
     };
@@ -54,7 +56,6 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
         localStorage.removeItem('user');
         setUser(null);
         setIsAuthenticated(false);
-        <Navigate to="/login" />
     };
     
     
@@ -63,4 +64,12 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
             {children}
         </AuthContext.Provider>
     );
+}
+
+export const useAuthContext = () => {
+    const ctx = useContext(AuthContext);
+    if (!ctx) {
+        throw new Error("useAuthContext must be used within an AuthProvider");
+    }
+    return ctx;
 }

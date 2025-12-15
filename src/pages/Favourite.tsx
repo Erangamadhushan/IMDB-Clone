@@ -1,8 +1,27 @@
-import { useMovieContext } from "../context/useContext/useMovieContext";
+import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/ui/Home/MovieCard";
+import { useState, useEffect } from "react";
+import { searchMovies } from "../services/api";
 
 function Favorite() {
-  const { favorites } = useMovieContext();
+  const { getAllFavorites } = useMovieContext();
+  const [favorites, setFavorites] =  useState([]);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      const favs = await getAllFavorites();
+      console.log("Favorite movie IDs:", favs);
+      const movieDetails = await Promise.all(
+        favs.map(async (movieId: string) => {
+          const movieData = await searchMovies(movieId);
+          return movieData[0]; // Assuming searchMovies returns an array
+        })
+      );
+      setFavorites(movieDetails.flat());
+      console.log("Fetched favorite movies:", movieDetails);
+    }
+    fetchFavorites();
+  }, []);
 
   return (
     <div className="favorites bg-linear-to-r from-red-950 via-red-800 to-red-950 p-8 w-full box-border">
