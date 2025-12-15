@@ -1,5 +1,5 @@
 import Favorite from "./pages/Favourite"; 
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import './index.css';
 
 import { MovieProvider } from "./context/MovieContext";
@@ -13,14 +13,14 @@ import { useNavigate } from "react-router-dom";
 
 
 const ProtectedRoute = ({children} : {children: React.ReactNode}) => {
-  const user = localStorage.getItem('user');
-  const token = localStorage.getItem('token');
+  // const user = localStorage.getItem('user');
+  // const token = localStorage.getItem('token');
   const navigate = useNavigate();
 
   const { isAuthenticated } = useAuthContext();
 
   if (!isAuthenticated) {
-    return navigate('/login');
+     navigate('/login');
   }
   return children;
 }
