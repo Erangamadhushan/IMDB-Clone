@@ -120,7 +120,7 @@ export const Footer = () => {
             </p>
             <div className="flex items-center space-x-2 mt-4 md:mt-0">
               <Film className="w-5 h-5 text-yellow-400" />
-              <span className="text-gray-400 text-sm">Your Movie Database</span>
+              <span className="text-gray-400 text-sm">IMDB-Clone Database</span>
             </div>
           </div>
         </div>

@@ -5,18 +5,38 @@ import MovieCard from "../components/ui/Home/MovieCard";
 import { authAPI } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import type { User } from '../types/User';
+import type { Movie } from '../types/Movie';
 
 export const UserProfile = () => {
-  const { user, logout } = useAuthContext();
+  const { logout } = useAuthContext();
   const [profileData, setProfileData] = useState<User | null>(null);
-
-  const { favorites } = useMovieContext();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [favorites, setFavorites] =  useState<Movie[]>([]);
   const navigate = useNavigate();
+  const { getAllFavorites } = useMovieContext();
 
   const logoutProfile = () => {
     logout();
     setProfileData(null);
   }
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      setLoading(true);
+      try {
+        const favs = await getAllFavorites();
+        console.log("Favorite movie IDs:", favs);
+
+        setFavorites(favs);
+      }
+      catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+      setLoading(false);
+    }
+    fetchFavorites();
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -29,12 +49,14 @@ export const UserProfile = () => {
         }
 
         const response = await authAPI.getUserProfile(token);
+        //console.log("Profile response:", response.data.user._doc);
         setProfileData(response.data.user._doc);
       } catch (err) {
         setError("Failed to load profile data");
         console.error(err);
       } finally {
         setLoading(false);
+        console.log(profileData)
       }
     };
 
@@ -43,11 +65,21 @@ export const UserProfile = () => {
 
   return (
     <div className="min-h-screen bg-neutral-900 text-white p-6">
-      <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="w-full mx-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
           {/* Left: Collection area (col-span 9 on large screens) */}
-          <section className="lg:col-span-9 bg-red-900/90 border border-black rounded-md p-6">
-            <h2 className="flex text-2xl font-semibold justify-between text-center mb-4"><span>My Favorite Collection</span> <span className='text-sm p-2 rounded-md bg-amber-500'><a href="/explore">Explorer Movies</a></span></h2>
+          <section className="xl:col-span-9 bg-red-900/90 border border-black rounded-md p-6">
+            <div>
+              {/* Back button */}
+              <a href="/" className="text-yellow-400 hover:text-yellow-500 font-semibold mb-4 inline-block">
+                &larr; Back to Home
+              </a>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold mb-4">Welcome, {profileData?.username || 'User'}!</h1>
+              <p className="text-gray-300 mb-6">Here is your favorite movie collection.</p>
+            </div>
+            <h2 className="flex text-2xl font-semibold justify-end text-center mb-4"><span className='text-sm p-2 rounded-md bg-amber-500'><a href="/explore">Explorer Movies</a></span></h2>
 
 
             <div className="">
@@ -68,56 +100,50 @@ export const UserProfile = () => {
                 </div>
               )}
             </div>
-
-
-            {/* Example details / bio lines */}
-            <div className="space-y-3">
-              <p className="h-2 bg-black/20 rounded w-full max-w-[90%]"></p>
-              <p className="h-2 bg-black/20 rounded w-full max-w-[85%]"></p>
-              <p className="h-2 bg-black/20 rounded w-full max-w-[80%]"></p>
-              <p className="h-2 bg-black/20 rounded w-full max-w-[75%]"></p>
-            </div>
           </section>
 
 
           {/* Right: Profile card (col-span 3 on large screens) */}
-          <aside className="lg:col-span-3 bg-red-900/90 border border-black rounded-md p-6 flex flex-col items-center h-screen sticky top-5 left-0">
-            {/* <div className="w-36 h-36 rounded-full bg-white overflow-hidden mb-4">
-              {user.avatarUrl ? (
-                <img src={user.avatarUrl} alt={`${user.name} avatar`} className="w-full h-full object-cover" />
+          <aside className="xl:col-span-3 bg-red-900/90 border border-black rounded-md p-6 flex flex-col items-center h-screen sticky top-5 left-0">
+            {loading ? (
+                <p>Loading profile...</p>
+              ) : error ? (
+                <p className="text-red-500">{error}</p>
+              ) : profileData ? (
+                <div className="text-center">
+                  <div className="text-center mb-6">
+                    <h3 className="font-semibold text-lg">{profileData?.username}</h3>
+                    <p className="text-sm text-gray-200">{profileData?.email}</p>
+                  </div>
+
+
+                  <div className="w-full">
+                    <button
+                      onClick={() => alert('Profile action - implement edit profile')}
+                      className="w-full mb-3 bg-black/70 hover:bg-black/80 text-white rounded-md py-2"
+                      >
+                      Edit Profile
+                    </button>
+
+
+                    <button
+                      onClick={logoutProfile}
+                      className="w-full bg-red-700 hover:bg-red-600 text-white rounded-md py-2"
+                      >
+                      Logout
+                    </button>
+                  </div>
+
+
+                  <div className="mt-auto text-xs text-gray-300 pt-6">
+                    <p>Member since: <span className="font-medium">2025</span></p>
+                  </div>
+                </div>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-black font-bold">{user.name?.charAt(0) ?? "U"}</div>
-              )}
-            </div> */}
-
-
-            <div className="text-center mb-6">
-              <h3 className="font-semibold text-lg">{profileData?.username}</h3>
-              <p className="text-sm text-gray-200">{profileData?.email}</p>
-            </div>
-
-
-            <div className="w-full">
-              <button
-                onClick={() => alert('Profile action - implement edit profile')}
-                className="w-full mb-3 bg-black/70 hover:bg-black/80 text-white rounded-md py-2"
-                >
-                Edit Profile
-              </button>
-
-
-              <button
-                onClick={logoutProfile}
-                className="w-full bg-red-700 hover:bg-red-600 text-white rounded-md py-2"
-                >
-                Logout
-              </button>
-            </div>
-
-
-            <div className="mt-auto text-xs text-gray-300 pt-6">
-              <p>Member since: <span className="font-medium">2025</span></p>
-            </div>
+                <p>No profile data available.</p>
+              )
+            }
+            
           </aside>
         </div>
         </div>

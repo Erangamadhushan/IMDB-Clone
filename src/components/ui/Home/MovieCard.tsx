@@ -4,7 +4,8 @@ import type { Movie } from "../../../types/Movie";
 import { useEffect, useState } from "react";
 
 
-function MovieCard({ movie, key }: { movie: Movie; key: number; className: string}) {
+
+function MovieCard({ movie, key, onClick }: { movie: Movie; key: number; className: string, onClick: () => boolean | void }) {
     const { isFavorite, removeMovieFromFavorites, addMovieToFavorites } = useMovieContext();
     const { isAuthenticated } =  useAuthContext();
     const [favorite, setFavorite] = useState<boolean>(false);
@@ -22,18 +23,18 @@ function MovieCard({ movie, key }: { movie: Movie; key: number; className: strin
         checkFavorite();
     }, [isAuthenticated, movieId]);
 
-    async function onFavoriteClick(e : React.MouseEvent<HTMLButtonElement>) {
+    async function onFavoriteClick(movie: Movie, e?: React.MouseEvent) {
         
-        e.stopPropagation();
-        e.preventDefault();
+        e?.stopPropagation();
+        e?.preventDefault();
 
         if (favorite) {
-            const result = await removeMovieFromFavorites(movieId);
+            const result = await removeMovieFromFavorites(movie.id);
             if (!result) {
                 setFavorite(false);
             }
         } else {
-            const result = await addMovieToFavorites(movieId);
+            const result = await addMovieToFavorites(movie);
             if (!result) {
                 setFavorite(true);
             }
@@ -44,7 +45,7 @@ function MovieCard({ movie, key }: { movie: Movie; key: number; className: strin
 
 
     return (
-        <div className="relative rounded-lg overflow-hidden bg-[#1a1a1a] group flex flex-col h-full transition-transform hover:scale-[1.03] text-sm sm:text-base">
+        <div className="relative rounded-lg overflow-hidden bg-[#1a1a1a] group flex flex-col h-full transition-transform hover:scale-[1.03] text-sm sm:text-base" onClick={onClick}>
         
             {/* Movie Poster */}
             <div data-key={key} className="relative w-full aspect-2/3 sm:aspect-2/3 overflow-hidden" >
@@ -60,7 +61,7 @@ function MovieCard({ movie, key }: { movie: Movie; key: number; className: strin
                     {
                         isAuthenticated && (
                             <button
-                                onClick={onFavoriteClick}
+                                onClick={() => onFavoriteClick(movie)}
                                 className={`
                                 absolute top-4 right-4 w-10 h-10 sm:w-10 sm:h-10 
                                 rounded-full flex items-center justify-center transition-colors 
@@ -74,7 +75,7 @@ function MovieCard({ movie, key }: { movie: Movie; key: number; className: strin
 
                     }
                     <h3 className="text-lg font-bold mb-2">{movie.title}</h3>
-                    <p className="">
+                    <p className="text-[12px] sm:text-[14px]">
                         {movie.overview}
                     </p>
                 </div>
