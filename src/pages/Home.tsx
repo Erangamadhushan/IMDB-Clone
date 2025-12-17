@@ -1,6 +1,7 @@
 import MovieCard from "../components/ui/Home/MovieCard";
 import { useState, useEffect } from "react";
 import { searchMovies, getPopularMovies } from "../services/api";
+import MovieModal from "../components/modals/MovieModal";
 
 import { HeroSection } from "../components/Home/HeroSection";
 import { About } from "../components/Home/About";
@@ -12,6 +13,7 @@ function Home() {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectMovie, setSelectMovie] = useState<boolean>(false);
 
   useEffect(() => {
     const loadPopularMovies = async () => {
@@ -92,7 +94,10 @@ function Home() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4 w-full box-border">
               {movies.map((movie, index) => (
-                <MovieCard movie={movie} key={index} className="animate-spin" />
+                <>
+                  
+                  <MovieCard movie={movie} key={index} onClick={() => setSelectMovie(true)} className="animate-spin" />
+                </>
               ))}
             </div>
           )}

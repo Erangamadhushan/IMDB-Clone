@@ -6,7 +6,7 @@ import { useAuthContext } from '../context/AuthContext';
 export default function IMDBNavbar() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [loginStatus, setLoginStatus] = useState<boolean>(false);
-  const { isAuthenticated, logout } = useAuthContext();
+  const { isAuthenticated } = useAuthContext();
 
   useEffect(() => {
     setLoginStatus(isAuthenticated);
@@ -22,6 +22,9 @@ export default function IMDBNavbar() {
       handleSearch();
     }
   };
+  const handleUserProfile = () => {
+    window.location.href = '/user-profile';
+  }
 
   return (
     <nav className="py-4 max-w-7xl mx-auto fixed top-5 left-5 right-5 z-50  backdrop-blur-lg shadow-lg rounded-full">
@@ -55,8 +58,8 @@ export default function IMDBNavbar() {
           </a >
           {
             loginStatus ? (
-              <button onClick={logout} className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 py-2 rounded-lg transition-colors duration-200">
-                Logout
+              <button onClick={handleUserProfile} className="ml-4 bg-yellow-400 cursor-pointer hover:bg-yellow-500 text-gray-900 font-semibold px-4 py-2 rounded-lg transition-colors duration-200">
+                <img src="./icons/user.png" alt="user" className="w-8 h-8 inline-block mr-2" />
               </button>
             ): (
               <Link to="/login" className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-4 py-2 rounded-lg transition-colors duration-200">

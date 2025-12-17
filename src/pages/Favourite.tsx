@@ -2,23 +2,18 @@ import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/ui/Home/MovieCard";
 import { useState, useEffect } from "react";
 import { searchMovies } from "../services/api";
+import type { Movie } from "../types/Movie";
 
 function Favorite() {
   const { getAllFavorites } = useMovieContext();
-  const [favorites, setFavorites] =  useState([]);
+  const [favorites, setFavorites] =  useState<Movie[]>([]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
       const favs = await getAllFavorites();
       console.log("Favorite movie IDs:", favs);
-      const movieDetails = await Promise.all(
-        favs.map(async (movieId: string) => {
-          const movieData = await searchMovies(movieId);
-          return movieData[0]; // Assuming searchMovies returns an array
-        })
-      );
-      setFavorites(movieDetails.flat());
-      console.log("Fetched favorite movies:", movieDetails);
+
+      setFavorites(favs);
     }
     fetchFavorites();
   }, []);
@@ -26,6 +21,12 @@ function Favorite() {
   return (
     <div className="favorites bg-linear-to-r from-red-950 via-red-800 to-red-950 p-8 w-full box-border">
       {/* Page Title */}
+      <div>
+        {/* Back button */}
+        <a href="/" className="text-yellow-400 hover:text-yellow-500 font-semibold mb-4 inline-block">
+          &larr; Back to Home
+        </a>
+      </div>
       <h2 className="mb-8 text-center text-4xl text-white drop-shadow-md">
         My Favorite Movies
       </h2>

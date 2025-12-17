@@ -1,11 +1,12 @@
 import {createContext, useContext, useState} from "react"
 import { movieAPI } from "../services/api";
+import type { Movie } from "../types/Movie";
 
 type MovieContextType = {
     favorites: string[];
     isFavorite: (movieId: string) => Promise<boolean | undefined>;
     removeMovieFromFavorites: (movieId: string) => boolean;
-    addMovieToFavorites: (movieId: string) => boolean;
+    addMovieToFavorites: (movie: Movie) => boolean;
     getAllFavorites: () => Promise<string[]>;
 }
 
@@ -65,15 +66,15 @@ export const MovieProvider = ({children} : {children: React.ReactNode}) => {
         }
     }
 
-    const addMovieToFavorites = (movieId: string) => {
+    const addMovieToFavorites = (movie: Movie) => {
         try {
             //console.log("Adding movie to favorites:", movieId);
             const token = localStorage.getItem("token");
             if (!token) return false;
 
-            movieAPI.addFavoriteMovie(token, movieId)
+            movieAPI.addFavoriteMovie(token, movie)
                 .then(() => {
-                    console.log("Movie removed from favorites successfully");
+                    console.log("Movie added to favorites successfully");
                     return true;
                 })
                 .catch((error) => {

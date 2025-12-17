@@ -1,4 +1,5 @@
 import axios from 'axios';
+import type { Movie } from '../types/Movie';
 
 const API_KEY: string = import.meta.env.VITE_API_KEY;
 const BASE_URL: string = import.meta.env.VITE_BASE_URL;
@@ -77,8 +78,8 @@ export const movieAPI = {
     });
   },
 
-  addFavoriteMovie: (token: string, movieId: string) => {
-    return api.post('/api/auth/user/favorites', { movieId }, {
+  addFavoriteMovie: (token: string, movie: Movie) => {
+    return api.post('/api/auth/user/favorites', { movie }, {
       headers: {
         Authorization: `Bearer ${token}`
       }
