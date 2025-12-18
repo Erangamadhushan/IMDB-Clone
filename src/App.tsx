@@ -10,6 +10,7 @@ import  Register  from "./pages/Register";
 import Explore from "./pages/Explore";
 import { UserProfile } from "./pages/UserProfile";
 import { useNavigate } from "react-router-dom";
+import About from "./pages/About";
 
 
 const ProtectedRoute = ({children} : {children: React.ReactNode}) => {
@@ -48,6 +49,7 @@ function App() {
                   <UserProfile />
                 </ProtectedRoute>
               } />
+              <Route path="/about" element={<About />} />
             </Routes>
           </main>
         </AuthProvider>
