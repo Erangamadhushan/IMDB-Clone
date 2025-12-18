@@ -11,6 +11,9 @@ import Explore from "./pages/Explore";
 import { UserProfile } from "./pages/UserProfile";
 import { useNavigate } from "react-router-dom";
 
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+
 
 const ProtectedRoute = ({children} : {children: React.ReactNode}) => {
   // const user = localStorage.getItem('user');
@@ -46,6 +49,12 @@ function App() {
               <Route path="/user-profile" element={
                 <ProtectedRoute>
                   <UserProfile />
+                </ProtectedRoute>
+              } />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={
+                <ProtectedRoute>
+                  <Contact />
                 </ProtectedRoute>
               } />
             </Routes>

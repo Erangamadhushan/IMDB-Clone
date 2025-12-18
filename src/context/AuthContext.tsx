@@ -2,6 +2,7 @@
 import {createContext, useState, useEffect, useContext} from "react"
 import type { User } from "../types/User";
 import { useNavigate } from 'react-router-dom';
+import { isTokenValid } from "../utils/IsValidToken";
 
 type AuthContextType = {
     user: User | null;
@@ -28,7 +29,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsAuthenticated(!!token);
         
-        if (token && storedUser) {
+        if (token && storedUser && isTokenValid(token)) {
             try {
                 const userData: User | null = JSON.parse(storedUser);
                 if (userData) {
