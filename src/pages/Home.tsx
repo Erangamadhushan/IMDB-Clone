@@ -1,7 +1,7 @@
 import MovieCard from "../components/ui/Home/MovieCard";
 import { useState, useEffect } from "react";
 import { searchMovies, getPopularMovies } from "../services/api";
-import MovieModal from "../components/modals/MovieModal";
+//import MovieModal from "../components/modals/MovieModal";
 
 import { HeroSection } from "../components/Home/HeroSection";
 import { About } from "../components/Home/About";
