@@ -29,7 +29,6 @@ This project is ideal for **learning, practice, and portfolio presentation**.
 
 ## 📸 Screenshots
 
-> 📌 Create a `screenshots/` folder in the project root and add images there.
 
 ### 🏠 Home Page
 ![Home Page](./screenshots/Homepage.png)
@@ -43,6 +42,15 @@ This project is ideal for **learning, practice, and portfolio presentation**.
 
 ### 📬 Contact / Feedback Page
 ![Contact Page](./screenshots/Contact.png)
+
+### Login Page
+![Login Page](./screenshots/login.png)
+
+### Register Page
+![Register Page](./screenshots/register.png)
+
+### Explorer Page
+![Explorer More Page](./screenshots/explorer.png)
 
 # 🚀 Features
 - 🎥 Movie browsing interface
@@ -160,4 +168,4 @@ All movie data and images belong to their respective owners.
 
 📧 [erangamadhushann956@gmail.com]('erangamadhushann956@gmail.com')
 
-🔗 Add your [Erangamadhushan]('https://github.com/Erangamadhushan')
+🔗 GitHub [Erangamadhushan]('https://github.com/Erangamadhushan')
