@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import { AuthProvider, useAuthContext } from "./context/AuthContext";
 import Login from "./pages/Login";
 import  Register  from "./pages/Register";
+import { ForgotPassword } from "./pages/ForgotPassword";
 import Explore from "./pages/Explore";
 import { UserProfile } from "./pages/UserProfile";
 import { useNavigate } from "react-router-dom";
@@ -57,6 +58,7 @@ function App() {
                   <Contact />
                 </ProtectedRoute>
               } />
+              <Route path="/forgot" element={<ForgotPassword />} />
             </Routes>
           </main>
         </AuthProvider>
