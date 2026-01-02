@@ -28,7 +28,7 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
+                  href="/"
                   className="text-gray-400 hover:text-yellow-400 transition-colors"
                 >
                   Top Rated
@@ -36,7 +36,7 @@ export const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/"
                   className="text-gray-400 hover:text-yellow-400 transition-colors"
                 >
                   Newest
@@ -44,7 +44,7 @@ export const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/"
                   className="text-gray-400 hover:text-yellow-400 transition-colors"
                 >
                   Categories
@@ -75,7 +75,7 @@ export const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/"
                   className="text-gray-400 hover:text-yellow-400 transition-colors"
                 >
                   Privacy Policy
@@ -94,20 +94,24 @@ export const Footer = () => {
               your inbox.
             </p>
             <div className="flex gap-2 max-w-md">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyPress={handleEmailKeyPress}
-                className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
-              />
-              <button
-                onClick={handleNewsletterSubmit}
-                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
-              >
-                Subscribe
-              </button>
+              <form onSubmit={(e) => {e.preventDefault(); alert("Newsletter subscription temporary interruption")}} className="flex gap-2 max-w-md">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onKeyPress={handleEmailKeyPress}
+                  className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-700 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                  required
+                />
+                <button
+                  type="submit"
+                  onClick={handleNewsletterSubmit}
+                  className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold px-6 py-2 rounded-lg cursor-pointer transition-colors duration-200"
+                >
+                  Subscribe
+                </button>
+              </form>
             </div>
           </div>
         </div>
