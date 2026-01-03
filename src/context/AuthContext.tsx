@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const userData: User | null = JSON.parse(storedUser);
         if (userData) {
-          // eslint-disable-next-line react-hooks/set-state-in-effect
           setUser(userData);
         }
         setLoading(false);

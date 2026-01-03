@@ -21,12 +21,15 @@ export const UserProfile = () => {
     setProfileData(null);
   };
 
+  
   useEffect(() => {
     const fetchFavorites = async () => {
-      const favs = await getAllFavorites();
+      const favs: Movie[] = await getAllFavorites();
       console.log("Favorite movie IDs:", favs);
-
-      setFavorites(favs);
+      favs.map((movie: Movie) =>{
+        console.log("Favorite movie data:", movie);
+        setFavorites((prev) => [...prev, movie]);
+      });
     }
     fetchFavorites();
   }, []);

@@ -1,7 +1,7 @@
 interface Movie {
     adult: boolean;
     backdrop_path?: string;
-    id?: string | number | undefined;
+    id?: string | undefined;
     original_language?: string;
     overview: string;
     poster_path: string;

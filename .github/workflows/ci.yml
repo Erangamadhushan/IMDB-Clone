@@ -1,0 +1,58 @@
+name: React Vite CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Build, Test, Security & Docker
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+
+      - name: Run tests
+        run: npm run test -- --run
+
+      - name: Run npm audit
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+      # 7️⃣ Build production bundle
+      - name: Build Vite app
+        run: npm run build
+
+      # 8️⃣ Upload build artifacts (optional but useful)
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vite-build
+          path: dist
+
+      # 9️⃣ Docker image build (no push)
+    #   - name: Build Docker image
+    #     run: |
+    #       docker build \
+    #         -t react-vite-app:${{ github.sha }} \
+    #         -t react-vite-app:latest .

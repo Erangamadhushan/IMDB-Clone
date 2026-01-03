@@ -35,7 +35,7 @@ function MovieCard({
     e?.preventDefault();
 
     if (favorite) {
-      const result = await removeMovieFromFavorites(movie.id);
+      const result = await removeMovieFromFavorites(movie.id!);
       if (!result) {
         setFavorite(false);
       }
