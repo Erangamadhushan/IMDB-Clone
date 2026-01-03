@@ -11,7 +11,9 @@ export const ForgotPassword = () => {
         </button>
       </div>
       <div className="bg-gray-950 text-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-yellow-600">Forgot Password</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-yellow-600">
+          Forgot Password
+        </h2>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-yellow-600 mb-2">

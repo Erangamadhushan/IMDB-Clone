@@ -13,7 +13,7 @@ function Favorite() {
       const favs = await getAllFavorites();
       console.log("Favorite movie IDs:", favs);
 
-      setFavorites(favs);
+      setFavorites();
     }
     fetchFavorites();
   }, []);
@@ -32,7 +32,7 @@ function Favorite() {
       </h2>
 
       {/* Empty State */}
-      {favorites.length === 0 ? (
+      {favorites?.length === 0 ? (
         <div className="favorites-empty text-center p-16 sm:p-8 bg-white/5 rounded-xl mx-auto my-8 max-w-[600px]">
           <h2 className="mb-4 text-2xl text-[#e50914]">No Favorites Yet</h2>
           <p className="text-gray-400 text-lg leading-relaxed">
@@ -42,7 +42,7 @@ function Favorite() {
       ) : (
         /* Movies Grid */
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4 w-full box-border">
-          {favorites.map((movie,index) => (
+          {favorites?.map((movie,index) => (
             <MovieCard key={index} movie={movie} className="animate-fadeIn" />
           ))}
         </div>

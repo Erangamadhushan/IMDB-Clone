@@ -95,8 +95,12 @@ function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4 w-full box-border">
               {movies.map((movie, index) => (
                 <>
-                  
-                  <MovieCard movie={movie} key={index} onClick={() => setSelectMovie(true)} className="animate-spin" />
+                  <MovieCard
+                    movie={movie}
+                    key={index}
+                    onClick={() => setSelectMovie(true)}
+                    className={`animate-spin ${selectMovie ? "scale-105" : ""}`}
+                  />
                 </>
               ))}
             </div>

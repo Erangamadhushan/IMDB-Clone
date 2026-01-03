@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
-import { Film } from 'lucide-react';
+import React, { useState } from "react";
+import { Film } from "lucide-react";
 
 export const Footer = () => {
-  const [email, setEmail] = useState('');
-
-  
-
-  
+  const [email, setEmail] = useState("");
 
   const handleNewsletterSubmit = () => {
-    console.log('Newsletter subscription:', email);
-    setEmail('');
+    console.log("Newsletter subscription:", email);
+    setEmail("");
   };
 
   const handleEmailKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleNewsletterSubmit();
     }
   };
@@ -94,7 +90,13 @@ export const Footer = () => {
               your inbox.
             </p>
             <div className="flex gap-2 max-w-md">
-              <form onSubmit={(e) => {e.preventDefault(); alert("Newsletter subscription temporary interruption")}} className="flex gap-2 max-w-md">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  alert("Newsletter subscription temporary interruption");
+                }}
+                className="flex gap-2 max-w-md"
+              >
                 <input
                   type="email"
                   placeholder="Enter your email"

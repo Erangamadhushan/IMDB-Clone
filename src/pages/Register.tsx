@@ -32,11 +32,14 @@ export default function Register() {
 
     if (!form.username.trim()) newErrs.username = "Username is required";
 
-    if (!form.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) newErrs.email = "Valid email is required";
+    if (!form.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
+      newErrs.email = "Valid email is required";
 
-    if (form.password.length < 6) newErrs.password = "Password must be at least 6 characters";
+    if (form.password.length < 6)
+      newErrs.password = "Password must be at least 6 characters";
 
-    if (form.password !== form.confirmPassword) newErrs.confirmPassword = "Passwords do not match";
+    if (form.password !== form.confirmPassword)
+      newErrs.confirmPassword = "Passwords do not match";
 
     setErrors(newErrs);
 
@@ -48,27 +51,33 @@ export default function Register() {
     if (!validate()) return;
     setSubmitting(true);
     try {
-      
-      const response = await authAPI.register(form.username, form.email, form.password);
+      const response = await authAPI.register(
+        form.username,
+        form.email,
+        form.password
+      );
       console.log("Registration response:", response.data.message);
       navigate("/login");
       alert("Registration successful! You can now log in.");
 
-      
       setForm({ username: "", email: "", password: "", confirmPassword: "" });
     } catch (err) {
-
       console.error(err);
       alert("Registration failed — check console for details.");
-
     } finally {
       setSubmitting(false);
     }
   }
 
   return (
-    <div className="min-h-screen bg-neutral-900 text-white" style={{ backgroundImage: "url('/dark-vip-cinema-studio.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      
+    <div
+      className="min-h-screen bg-neutral-900 text-white"
+      style={{
+        backgroundImage: "url('/dark-vip-cinema-studio.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div
         className="absolute inset-0 -z-10 bg-cover bg-center opacity-90"
         style={{ backgroundImage: "url('/theatre-room.jpg')" }}
@@ -80,8 +89,13 @@ export default function Register() {
           {/* Left: Form card (on large screens column-span 4) */}
           <div className="lg:col-span-4">
             <div className="bg-black/60 border border-red-700/60 rounded-lg p-8 backdrop-blur-sm max-w-md">
-              <h2 className="text-4xl font-semibold text-yellow-400 mb-2">Register</h2>
-              <p className="text-sm text-gray-300 mb-6">Create an account to save favorites, write reviews and get recommendations.</p>
+              <h2 className="text-4xl font-semibold text-yellow-400 mb-2">
+                Register
+              </h2>
+              <p className="text-sm text-gray-300 mb-6">
+                Create an account to save favorites, write reviews and get
+                recommendations.
+              </p>
 
               <form onSubmit={handleSubmit} noValidate>
                 <label className="block mb-4">
@@ -95,10 +109,15 @@ export default function Register() {
                     }`}
                     placeholder="Username"
                     aria-invalid={!!errors.username}
-                    aria-describedby={errors.username ? "username-error" : undefined}
+                    aria-describedby={
+                      errors.username ? "username-error" : undefined
+                    }
                   />
                   {errors.username && (
-                    <p id="username-error" className="mt-1 text-red-400 text-sm">
+                    <p
+                      id="username-error"
+                      className="mt-1 text-red-400 text-sm"
+                    >
                       {errors.username}
                     </p>
                   )}
@@ -137,10 +156,15 @@ export default function Register() {
                     }`}
                     placeholder="Password"
                     aria-invalid={!!errors.password}
-                    aria-describedby={errors.password ? "password-error" : undefined}
+                    aria-describedby={
+                      errors.password ? "password-error" : undefined
+                    }
                   />
                   {errors.password && (
-                    <p id="password-error" className="mt-1 text-red-400 text-sm">
+                    <p
+                      id="password-error"
+                      className="mt-1 text-red-400 text-sm"
+                    >
                       {errors.password}
                     </p>
                   )}
@@ -154,11 +178,15 @@ export default function Register() {
                     value={form.confirmPassword}
                     onChange={handleChange}
                     className={`w-full rounded-md border px-4 py-3 bg-transparent placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400/60 ${
-                      errors.confirmPassword ? "border-red-500" : "border-gray-700"
+                      errors.confirmPassword
+                        ? "border-red-500"
+                        : "border-gray-700"
                     }`}
                     placeholder="Confirm password"
                     aria-invalid={!!errors.confirmPassword}
-                    aria-describedby={errors.confirmPassword ? "confirm-error" : undefined}
+                    aria-describedby={
+                      errors.confirmPassword ? "confirm-error" : undefined
+                    }
                   />
                   {errors.confirmPassword && (
                     <p id="confirm-error" className="mt-1 text-red-400 text-sm">
@@ -176,7 +204,10 @@ export default function Register() {
                 </button>
 
                 <p className="text-sm text-red-400">
-                  Already have an account? <a href="/login" className="underline text-yellow-300">Login</a>
+                  Already have an account?{" "}
+                  <a href="/login" className="underline text-yellow-300">
+                    Login
+                  </a>
                 </p>
               </form>
             </div>
@@ -185,10 +216,14 @@ export default function Register() {
           {/* Right: Hero text (on large screens column-span 8) */}
           <div className="lg:col-span-8">
             <div className="px-6 lg:px-12">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-yellow-400 leading-tight mb-6">Welcome to Cinema Vault</h1>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-yellow-400 leading-tight mb-6">
+                Welcome to Cinema Vault
+              </h1>
               <p className="max-w-3xl text-lg md:text-xl text-gray-200">
-                Access your personalized movie collection, reviews, and recommendations by creating an account. Dive back into the world
-                of cinema with just a few clicks — save favorites, rate films and discover curated lists.
+                Access your personalized movie collection, reviews, and
+                recommendations by creating an account. Dive back into the world
+                of cinema with just a few clicks — save favorites, rate films
+                and discover curated lists.
               </p>
 
               {/* Decorative vertical divider to mimic the reference */}

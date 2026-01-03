@@ -99,7 +99,6 @@ function Explore() {
                   <MovieCard
                     movie={movie}
                     key={index}
-                    onClick={() => setSelectMovie(true)}
                     className="animate-spin"
                   />
                 </>

@@ -10,8 +10,7 @@ const ContactSchema = Yup.object({
     .email("Invalid email address")
     .required("Email is required"),
 
-  type: Yup.string()
-    .required("Please select a feedback type"),
+  type: Yup.string().required("Please select a feedback type"),
 
   message: Yup.string()
     .min(10, "Message must be at least 10 characters")
@@ -21,7 +20,6 @@ const ContactSchema = Yup.object({
 const Contact = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-[#4b0000] via-[#7a0000] to-[#2a0000] text-white">
-
       {/* Back Button */}
       <div className="px-8 pt-6">
         <button
@@ -39,11 +37,11 @@ const Contact = () => {
         </h1>
 
         <p className="text-center text-gray-200 max-w-2xl mx-auto mb-12 text-lg">
-          Share your suggestions, complaints, or feedback to help us improve the IMDB Clone experience.
+          Share your suggestions, complaints, or feedback to help us improve the
+          IMDB Clone experience.
         </p>
 
         <div className="bg-black/60 rounded-2xl shadow-xl p-8 md:p-10">
-
           <Formik
             initialValues={{
               name: "",
@@ -60,7 +58,6 @@ const Contact = () => {
           >
             {({ touched, errors }) => (
               <Form className="space-y-6">
-
                 {/* Name */}
                 <div>
                   <label className="block text-sm mb-2 text-gray-300">
@@ -157,7 +154,6 @@ const Contact = () => {
                     Submit Feedback
                   </button>
                 </div>
-
               </Form>
             )}
           </Formik>
