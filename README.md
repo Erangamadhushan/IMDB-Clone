@@ -23,7 +23,7 @@ This project is ideal for **learning, practice, and portfolio presentation**.
 
 ## 🌐 Live Demo
 
-> 🔗 **Live URL:** Comming Soon
+> 🔗 **Live URL: [IMDB Clone](https://imdb-clone-sigma-beige.vercel.app/)
 
 ---
 
