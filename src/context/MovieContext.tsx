@@ -7,7 +7,7 @@ type MovieContextType = {
   isFavorite: (movieId: string) => Promise<boolean | undefined>;
   removeMovieFromFavorites: (movieId: string) => Promise<boolean>;
   addMovieToFavorites: (movie: Movie) => Promise<boolean>;
-  getAllFavorites: () => Promise<string[]>;
+  getAllFavorites: () => Promise<Movie[]>;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -33,7 +33,7 @@ export const MovieProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const getAllFavorites = async () => {
+  const getAllFavorites = async (): Promise<Movie[]> => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return [];

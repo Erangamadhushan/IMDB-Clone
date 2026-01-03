@@ -1,20 +1,19 @@
 import { useMovieContext } from "../context/MovieContext";
 import MovieCard from "../components/ui/Home/MovieCard";
 import { useState, useEffect } from "react";
-//import { searchMovies } from "../services/api";
 import type { Movie } from "../types/Movie";
+//import { searchMovies } from "../services/api";
 
 function Favorite() {
   const { getAllFavorites } = useMovieContext();
-  const [favorites, setFavorites] =  useState<Movie[]>([]);
+  const [favorites, setFavorites] = useState<Array<Movie>>([]);
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      const favs = await getAllFavorites();
+      const favs: Movie[] = await getAllFavorites();
       console.log("Favorite movie IDs:", favs);
-
-      setFavorites();
-    }
+      setFavorites(favs);
+    };
     fetchFavorites();
   }, []);
 
@@ -23,7 +22,10 @@ function Favorite() {
       {/* Page Title */}
       <div>
         {/* Back button */}
-        <a href="/" className="text-yellow-400 hover:text-yellow-500 font-semibold mb-4 inline-block">
+        <a
+          href="/"
+          className="text-yellow-400 hover:text-yellow-500 font-semibold mb-4 inline-block"
+        >
           &larr; Back to Home
         </a>
       </div>
@@ -42,7 +44,7 @@ function Favorite() {
       ) : (
         /* Movies Grid */
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 p-4 w-full box-border">
-          {favorites?.map((movie,index) => (
+          {favorites?.map((movie, index) => (
             <MovieCard key={index} movie={movie} className="animate-fadeIn" />
           ))}
         </div>
